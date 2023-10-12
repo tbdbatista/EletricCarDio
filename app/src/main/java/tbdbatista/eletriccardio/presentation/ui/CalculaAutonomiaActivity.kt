@@ -6,7 +6,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import tbdbatista.eletriccardio.R
 
-class CalculatAutonomiaActivity : AppCompatActivity() {
+class CalculaAutonomiaActivity : AppCompatActivity() {
 
     var kmPercorridoValue: Float = 0.0f
     var custoKwhValue: Float = 0.0f
@@ -18,7 +18,6 @@ class CalculatAutonomiaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calcular_autonomia)
-        supportActionBar?.title = "Eletric Car Calculator App"
         setupViews()
         setupListeners()
     }

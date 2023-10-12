@@ -18,10 +18,10 @@ class CarroAdapter(private val carros: List<Carro>) : RecyclerView.Adapter<Carro
 
         init {
             itemView.apply {
-                preco = findViewById(R.id.tv_preco_valor)
-                bateria = findViewById(R.id.tv_bateria_valor)
-                potencia = findViewById(R.id.tv_potencia_valor)
-                recarga = findViewById(R.id.tv_recarga_valor)
+                preco = findViewById(R.id.tv_preco_value)
+                bateria = findViewById(R.id.tv_bateria_value)
+                potencia = findViewById(R.id.tv_potencia_value)
+                recarga = findViewById(R.id.tv_bateria_value)
             }
         }
     }
