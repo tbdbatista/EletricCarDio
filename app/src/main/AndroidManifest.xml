@@ -10,9 +10,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.EletricCarDio"
-        tools:targetApi="31">
+        tools:targetApi="33">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.CalculatAutonomiaActivity"/>
+        <activity android:name=".presentation.ui.CalculatAutonomiaActivity"/>
     </application>
 
 </manifest>
