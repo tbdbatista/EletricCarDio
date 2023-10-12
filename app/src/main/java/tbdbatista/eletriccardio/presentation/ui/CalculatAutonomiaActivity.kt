@@ -1,13 +1,13 @@
-package tbdbatista.eletriccardio.presentation
+package tbdbatista.eletriccardio.presentation.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import tbdbatista.eletriccardio.R
 
-class MainActivity : AppCompatActivity() {
+class CalculatAutonomiaActivity : AppCompatActivity() {
+
     var kmPercorridoValue: Float = 0.0f
     var custoKwhValue: Float = 0.0f
 
@@ -17,7 +17,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_calcular_autonomia)
+        supportActionBar?.title = "Eletric Car Calculator App"
         setupViews()
         setupListeners()
     }
@@ -29,16 +30,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setupListeners() {
-
         calcularBotao.setOnClickListener {
-            kmPercorridoValue = kmPercorridoEditText.text.toString().toFloat()
-            custoKwhValue = custoKwhEditText.text.toString().toFloat()
-            calculate()
+            if(kmPercorridoEditText.text.isNotEmpty() && custoKwhEditText.text.isNotEmpty()) {
+                kmPercorridoValue = kmPercorridoEditText.text.toString().toFloat()
+                custoKwhValue = custoKwhEditText.text.toString().toFloat()
+                calculate(kmPercorridoValue, custoKwhValue)
+            } else {
+                calcularBotao.text = "Digite dois valores válidos para o cálculo"
+            }
         }
     }
 
-    fun calculate() {
-        Log.i("TAG", kmPercorridoValue.toString())
-        Log.i("TAG", custoKwhValue.toString())
+    fun calculate(a: Float, b: Float) {
+        calcularBotao.text = "Resultado: " + (a/b).toString()
     }
 }
