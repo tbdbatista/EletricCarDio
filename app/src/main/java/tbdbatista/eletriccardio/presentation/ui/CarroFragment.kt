@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +32,7 @@ class CarroFragment : Fragment() {
 
     lateinit var goToCalcularBotao: FloatingActionButton
     lateinit var listaCarros: RecyclerView
+    lateinit var progressBar: ProgressBar
     val carrosArray = ArrayList<Carro>()
 
     override fun onCreateView(
@@ -50,6 +53,7 @@ class CarroFragment : Fragment() {
     fun setupViews(view: View) {
         goToCalcularBotao = view.findViewById(R.id.button_goto_calcular)
         listaCarros = view.findViewById(R.id.rv_lista_carro)
+        progressBar = view.findViewById(R.id.pb_loader)
     }
     fun setupListeners() {
         goToCalcularBotao.setOnClickListener {
@@ -79,8 +83,15 @@ class CarroFragment : Fragment() {
                 urlConnection = url.openConnection() as HttpURLConnection
                 urlConnection.connectTimeout = 60000
                 urlConnection.readTimeout = 60000
-                var response = urlConnection.inputStream.bufferedReader().use { it.readText() }
-                publishProgress(response)
+                urlConnection.setRequestProperty("Accept", "application/json")
+
+                if (urlConnection.responseCode == HttpURLConnection.HTTP_OK) {
+
+                    var response = urlConnection.inputStream.bufferedReader().use { it.readText() }
+                    publishProgress(response)
+                } else {
+                    Log.e("ServiceError", "Serviço indisponível no momento")
+                }
             } catch (e: java.lang.Exception) {
                 Log.e("StreamError", e.toString())
                 Log.e("StreamError", "Stream error on doInBackground in CarroFragment.kt")
@@ -122,7 +133,8 @@ class CarroFragment : Fragment() {
                     )
                     carrosArray.add(model)
                 }
-//                progress.isVisible = false
+                progressBar.isVisible = false
+                listaCarros.isVisible = true
 //                noInternetImage.isVisible = false
 //                noInternetText.isVisible = false
                 setupLista()
@@ -135,7 +147,8 @@ class CarroFragment : Fragment() {
 
     fun callService() {
         val urlBase = "https://igorbag.github.io/cars-api/cars.json"
-//        progress.isVisible = true
+        listaCarros.isVisible = false
+        progressBar.isVisible = true
         MyTask().execute(urlBase)
     }
 }
