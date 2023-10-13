@@ -1,7 +1,11 @@
 package tbdbatista.eletriccardio.presentation.ui
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -40,6 +44,7 @@ class CarroFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViews(view)
         setupListeners()
+        checkForInternet(context)
         callService()
     }
 
@@ -61,6 +66,7 @@ class CarroFragment : Fragment() {
     }
 
     // Funções assíncronas
+    @Suppress("DEPRECATION")
     inner class  MyTask : AsyncTask<String, String, String>() {
 
         override fun onPreExecute() {
@@ -144,5 +150,27 @@ class CarroFragment : Fragment() {
         progressBar.isVisible = true
         MyTask().execute(urlBase)
     }
+
+    fun checkForInternet(context: Context?): Boolean {
+        val connectivityManager =
+            context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val network = connectivityManager.activeNetwork ?: return false
+            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+            return when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            val networkInfo = connectivityManager.activeNetworkInfo ?: return false
+            @Suppress("DEPRECATION")
+            return networkInfo.isConnected
+        }
+    }
+
 }
 
