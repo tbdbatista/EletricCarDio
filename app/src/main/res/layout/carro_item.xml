@@ -32,7 +32,7 @@
             <TextView
                 android:id="@+id/tv_preco"
                 style="@style/TextAppearance.AppCompat.Body2"
-                android:layout_width="60dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="@string/preco"
@@ -52,7 +52,7 @@
             <TextView
                 android:id="@+id/tv_bateria"
                 style="@style/TextAppearance.AppCompat.Body2"
-                android:layout_width="60dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="@string/bateria"
@@ -72,7 +72,7 @@
             <TextView
                 android:id="@+id/tv_potencia"
                 style="@style/TextAppearance.AppCompat.Body2"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="@string/potencia"
@@ -93,7 +93,7 @@
             <TextView
                 android:id="@+id/tv_recarga"
                 style="@style/TextAppearance.AppCompat.Body2"
-                android:layout_width="60dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="@string/recarga"
