@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -15,16 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONArray
-import org.json.JSONObject
 import org.json.JSONTokener
 import tbdbatista.eletriccardio.R
-import tbdbatista.eletriccardio.presentation.data.CarroFactory
 import tbdbatista.eletriccardio.presentation.domain.Carro
 import tbdbatista.eletriccardio.presentation.ui.adapters.CarroAdapter
-import java.io.BufferedInputStream
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
