@@ -11,7 +11,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +32,8 @@ class CarroFragment : Fragment() {
     lateinit var goToCalcularBotao: FloatingActionButton
     lateinit var listaCarros: RecyclerView
     lateinit var progressBar: ProgressBar
+    lateinit var noInternetImage: ImageView
+    lateinit var noInternetText: TextView
     val carrosArray = ArrayList<Carro>()
 
     override fun onCreateView(
@@ -44,14 +48,25 @@ class CarroFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViews(view)
         setupListeners()
-        checkForInternet(context)
-        callService()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (checkForInternet(context)) {
+            callService()
+//            getAllCars()
+        } else {
+            callEmptyState()
+        }
     }
 
     fun setupViews(view: View) {
         goToCalcularBotao = view.findViewById(R.id.button_goto_calcular)
         listaCarros = view.findViewById(R.id.rv_lista_carro)
         progressBar = view.findViewById(R.id.pb_loader)
+        noInternetImage = view.findViewById(R.id.image_empty_state)
+        noInternetText = view.findViewById(R.id.tv_no_wifi)
     }
     fun setupListeners() {
         goToCalcularBotao.setOnClickListener {
@@ -134,8 +149,8 @@ class CarroFragment : Fragment() {
                 }
                 progressBar.isVisible = false
                 listaCarros.isVisible = true
-//                noInternetImage.isVisible = false
-//                noInternetText.isVisible = false
+                noInternetImage.isVisible = false
+                noInternetText.isVisible = false
                 setupLista()
             } catch (ex: Exception) {
                 Log.e("Erro ->", ex.message.toString())
@@ -149,6 +164,13 @@ class CarroFragment : Fragment() {
         listaCarros.isVisible = false
         progressBar.isVisible = true
         MyTask().execute(urlBase)
+    }
+
+    fun callEmptyState() {
+        progressBar.visibility = View.GONE
+        listaCarros.visibility = View.GONE
+        noInternetImage.visibility = View.VISIBLE
+        noInternetText.visibility = View.VISIBLE
     }
 
     fun checkForInternet(context: Context?): Boolean {
