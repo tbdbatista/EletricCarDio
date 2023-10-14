@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +22,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONArray
 import org.json.JSONTokener
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import tbdbatista.eletriccardio.R
+import tbdbatista.eletriccardio.presentation.data.CarroApi
 import tbdbatista.eletriccardio.presentation.domain.Carro
 import tbdbatista.eletriccardio.presentation.ui.adapters.CarroAdapter
 import java.net.HttpURLConnection
@@ -34,7 +41,8 @@ class CarroFragment : Fragment() {
     lateinit var progressBar: ProgressBar
     lateinit var noInternetImage: ImageView
     lateinit var noInternetText: TextView
-    val carrosArray = ArrayList<Carro>()
+    lateinit var carroApi: CarroApi
+//    val carrosArray = ArrayList<Carro>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,14 +56,16 @@ class CarroFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViews(view)
         setupListeners()
-
+        setupRetrofit()
     }
 
     override fun onResume() {
         super.onResume()
         if (checkForInternet(context)) {
-            callService()
-//            getAllCars()
+//            callService()
+            listaCarros.isVisible = false
+            progressBar.isVisible = true
+            getAllCars()
         } else {
             callEmptyState()
         }
@@ -74,8 +84,8 @@ class CarroFragment : Fragment() {
         }
     }
 
-    fun setupLista() {
-        val adapter = CarroAdapter(carrosArray)
+    fun setupLista(lista: List<Carro>) {
+        val adapter = CarroAdapter(lista)
         listaCarros.layoutManager = LinearLayoutManager(context)
         listaCarros.adapter = adapter
     }
@@ -145,13 +155,13 @@ class CarroFragment : Fragment() {
                         recarga = recarga,
                         urlPhoto = urlPhoto
                     )
-                    carrosArray.add(model)
+//                    carrosArray.add(model)
                 }
                 progressBar.isVisible = false
                 listaCarros.isVisible = true
                 noInternetImage.isVisible = false
                 noInternetText.isVisible = false
-                setupLista()
+//                setupLista()
             } catch (ex: Exception) {
                 Log.e("Erro ->", ex.message.toString())
             }
@@ -163,7 +173,7 @@ class CarroFragment : Fragment() {
         val urlBase = "https://igorbag.github.io/cars-api/cars.json"
         listaCarros.isVisible = false
         progressBar.isVisible = true
-        MyTask().execute(urlBase)
+//        MyTask().execute(urlBase)
     }
 
     fun callEmptyState() {
@@ -192,6 +202,36 @@ class CarroFragment : Fragment() {
             @Suppress("DEPRECATION")
             return networkInfo.isConnected
         }
+    }
+
+    fun setupRetrofit() {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://igorbag.github.io/cars-api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        carroApi = retrofit.create(CarroApi::class.java)
+    }
+
+    fun getAllCars() {
+        carroApi.getAllCars().enqueue(object : Callback<List<Carro>> {
+            override fun onResponse(call: Call<List<Carro>>, response: Response<List<Carro>>) {
+                if(response.isSuccessful) {
+                    progressBar.isVisible = false
+                    noInternetImage.isVisible = false
+                    noInternetText.isVisible = false
+                    listaCarros.isVisible = true
+                    response.body()?.let {
+                        setupLista(it)
+                    }
+                } else{
+                    Toast.makeText(context, "Erro retrofit callbabk", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Carro>>, t: Throwable) {
+                Toast.makeText(context, "Erro retrofit callbabk", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
 }

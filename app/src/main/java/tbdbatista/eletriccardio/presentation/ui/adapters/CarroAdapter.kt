@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso
 import tbdbatista.eletriccardio.R
 import tbdbatista.eletriccardio.presentation.domain.Carro
 
-class CarroAdapter(private val carros: ArrayList<Carro>) : RecyclerView.Adapter<CarroAdapter.ViewHolder>() {
+class CarroAdapter(private val carros: List<Carro>) : RecyclerView.Adapter<CarroAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val preco: TextView
