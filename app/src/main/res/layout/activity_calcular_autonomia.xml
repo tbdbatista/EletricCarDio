@@ -44,6 +44,15 @@
         app:layout_constraintTop_toBottomOf="@id/et_preco_kwh"
         tools:ignore="VisualLintTextFieldSize" />
 
+    <TextView
+        android:id="@+id/tv_resultado"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/button_calcular"
+        app:layout_constraintTop_toBottomOf="@id/button_calcular"
+        tools:text="1.0" />
+
     <Button
         android:id="@+id/button_calcular"
         android:layout_width="match_parent"
